@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plugin-discovery
+  template:
+    metadata:
+      labels:
+        app: plugin-discovery
+    spec:
+      containers:
+        - name: plugin-discovery-container
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          readinessProbe:
+            httpGet:
+              path: /v1/metrics/health
+              port: {{ .Values.service.port }}
+
+          env:
+            - name: PORT
+              value: "{{ .Values.service.port}}"
+            - name: KONG_HOST
+              value: {{ .Values.kong.host }}

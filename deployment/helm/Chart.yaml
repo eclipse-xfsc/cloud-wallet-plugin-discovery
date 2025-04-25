@@ -1,0 +1,4 @@
+apiVersion: v2
+name: plugin-discovery
+description: A Helm chart for deploying a simple service
+version: 0.1.1-tag
